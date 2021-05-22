@@ -1,22 +1,20 @@
-import { Component } from 'react';
-import { connect } from 'react-redux';
-
+import { useEffect } from 'react';
+import { useDispatch,shallowEqual, useSelector } from 'react-redux';
 import ContactForm from '../../components/contactForm';
 import Filter from '../../components/filter';
 import ContactList from '../../components/contactList';
 import { fetchContact } from '../../redux/phonebook/phonebook-operations';
-import { isLoading } from '../../redux/phonebook/selectors';
 import s from './Phonebook.module.css';
 
-class PhonebookPage extends Component {
+const PhonebookPage = () => {
+const isLoading = useSelector(state => state.phonebook.loading, shallowEqual)
+
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(fetchContact())
+  }, [dispatch])
 
 
-  componentDidMount() {
-    this.props.fetchContact();
-
-}
-
-  render() {
     return(
       <>
             <div className={s.container}>
@@ -27,20 +25,12 @@ class PhonebookPage extends Component {
           <section title="Contacts" className={s.section}>
             <h2>Contacts</h2>
             <Filter />
-            {this.props.isLoading && <h1>Loading...</h1>}
+            {isLoading && <h1>Loading...</h1>}
             <ContactList /> 
           </section>
         </div>
       </>
     )
   }
-}
 
-const mapStateToProps = state => ({
- isLoading: isLoading(state)
-});
-const mapDispatchToProps = dispatch => ({
-  fetchContact: () => dispatch(fetchContact())
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(PhonebookPage)
+export default PhonebookPage

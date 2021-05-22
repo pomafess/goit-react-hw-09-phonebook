@@ -1,35 +1,27 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {logIn} from '../../redux/auth/auth-operations'
+import React, {useCallback} from 'react';
+import {useDispatch} from 'react-redux';
+
+import { logIn } from '../../redux/auth/auth-operations';
+import useForm from '../../shared/hooks/useForm';
 
 import s from './LoginPage.module.css';
 
-class LoginPage extends Component {
-  state = {
-    email: '',
-    password: '',
-  };
+const LoginPage = () => {
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
+   const initialState = {
+        name: '',
+        number: '',
+    };
 
-  handleSubmit = e => {
-    e.preventDefault();
-
-    this.props.onLogin(this.state);
-
-    this.setState({ name: '', email: '', password: '' });
-  };
-
-  render() {
-    const { email, password } = this.state;
+    const dispatch = useDispatch();
+    const onSubmit = useCallback((data) => dispatch(logIn(data)), [dispatch]);
+    const [data, , handleChange, handleSubmit] = useForm({ initialState, onSubmit });
 
     return (
       <div>
         <h1>Login</h1>
         <form
-          onSubmit={this.handleSubmit}
+          onSubmit={handleSubmit}
           className={s.form}
           autoComplete="off"
         >
@@ -38,8 +30,8 @@ class LoginPage extends Component {
             <input
               type="email"
               name="email"
-              value={email}
-              onChange={this.handleChange}
+              value={data.email}
+              onChange={handleChange}
               className={s.input}
             />
           </label>
@@ -49,8 +41,8 @@ class LoginPage extends Component {
             <input
               type="password"
               name="password"
-              value={password}
-              onChange={this.handleChange}
+              value={data.password}
+              onChange={handleChange}
               className={s.input}
             />
           </label>
@@ -59,11 +51,8 @@ class LoginPage extends Component {
         </form>
       </div>
     );
-  }
+ 
 }
 
-const mapDispatchToProps = {
-  onLogin: logIn,
-};
 
-export default connect(null, mapDispatchToProps)(LoginPage);
+export default LoginPage;

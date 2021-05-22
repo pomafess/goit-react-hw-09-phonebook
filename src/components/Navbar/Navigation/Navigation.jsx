@@ -1,16 +1,18 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { getIsAuthenticated } from '../../../redux/auth/selectors';
+import { shallowEqual, useSelector} from 'react-redux';
+
 
 import s from './Navigation.module.css';
 
 
-const Navigation = ({ isAuthenticated }) => (
+const Navigation = () => {
+const isAuthenticated = useSelector(state => state.auth.token, shallowEqual)
+return (
   <nav>
     <NavLink to="/" exact
       className={s.link}
-    activeClassName={s.activeLink} 
+      activeClassName={s.activeLink}
     >
       Главная
     </NavLink>
@@ -27,9 +29,6 @@ const Navigation = ({ isAuthenticated }) => (
     )}
   </nav>
 );
+};
 
-const mapStateToProps = state => ({
-  isAuthenticated: getIsAuthenticated(state),
-});
-
-export default connect(mapStateToProps)(Navigation);
+export default Navigation;

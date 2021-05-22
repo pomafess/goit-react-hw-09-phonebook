@@ -1,58 +1,34 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, {useCallback} from 'react';
+import {useDispatch} from 'react-redux';
 import PropTypes from 'prop-types';
-import { getContacts } from '../../redux/phonebook/selectors';
 import { addContact } from '../../redux/phonebook/phonebook-operations';
+import useForm from '../../shared/hooks/useForm';
 
 import styles from './ContactForm.module.css';
 
 
 
- class ContactForm extends Component {
+const ContactForm = () => {
 
-     state = {
+   const initialState = {
         name: '',
         number: '',
     };
 
-    handleChange = (type, e) => {
-        const {contacts} = this.props;
-        if (type==='name') {
-          const contactInState = contacts.find(contact => contact.name.toLowerCase() === e.target.value.toLowerCase());
-          if (contactInState) {
-            alert(`${contactInState.name} is already in contacts!`);
-          }
-        }
-        this.setState({[type]: e.target.value})
-    }
+    const dispatch = useDispatch();
+    const onSubmit = useCallback((contact) => dispatch(addContact(contact)), [dispatch]);
+    const [data, , handleChange, handleSubmit] = useForm({ initialState, onSubmit });
 
-    handleSubmit = e => {
-        e.preventDefault();
-        const {name, number} = this.state;
-        const {contacts, onAddContact} = this.props;
-        const contactInState = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
-        contactInState && alert(`${contactInState.name} is already in contacts!`);
-        if (!contactInState && name && number) {
-            onAddContact(name, number);
-            this.setState(contacts);
-            this.setState({ name: '', number: '' })
-            return
-        }
-    }
-    
-    render() {
-        const {name, number} = this.state;
         return (
-            <form onSubmit={this.handleSubmit} className={styles.form}>
+            <form onSubmit={handleSubmit} className={styles.form}>
                 <h3>Name</h3>
-                <label><input type="text" value={name} onChange={e => this.handleChange('name', e)} /></label><br/>
+                <input type="text" name="name" value={data.name} onChange={handleChange} /><br />
                 <h3>Number</h3>
-                <label><input type="tel" value={number} onChange={e => this.handleChange('number', e)} /></label><br/>
+                <input type="tel" name="number" value={data.number} onChange={handleChange} /><br/>
                 <button type="submit" className={styles.buttonForm}>Add contact</button>
             </form>
         )
     }
-}
 
 ContactForm.propTypes = {
     contacts: PropTypes.arrayOf(
@@ -62,15 +38,32 @@ ContactForm.propTypes = {
             number: PropTypes.string.isRequired,
         })
     ),
-    onAddContact: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = state => ({
-    contacts: getContacts(state)
-})
 
-const mapDispatchToProps = dispatch => ({
-    onAddContact: (name, number) => dispatch(addContact(name, number)),
-});
+export default ContactForm;
 
-export default connect(mapStateToProps, mapDispatchToProps) (ContactForm)
+// handleChange = (type, e) => {
+    //     const {contacts} = this.props;
+    //     if (type==='name') {
+    //       const contactInState = contacts.find(contact => contact.name.toLowerCase() === e.target.value.toLowerCase());
+    //       if (contactInState) {
+    //         alert(`${contactInState.name} is already in contacts!`);
+    //       }
+    //     }
+    //     this.setState({[type]: e.target.value})
+    // }
+
+    // handleSubmit = e => {
+    //     e.preventDefault();
+    //     const {name, number} = this.state;
+    //     const {contacts, onAddContact} = this.props;
+    //     const contactInState = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
+    //     contactInState && alert(`${contactInState.name} is already in contacts!`);
+    //     if (!contactInState && name && number) {
+    //         onAddContact(name, number);
+    //         this.setState(contacts);
+    //         this.setState({ name: '', number: '' })
+    //         return
+    //     }
+    // }
