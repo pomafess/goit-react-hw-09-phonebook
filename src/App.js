@@ -1,6 +1,7 @@
-import React , { Suspense, lazy, Component } from 'react';
+import React , { Suspense, lazy, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
 
 import Navbar from './components/Navbar';
 import PrivatRoute from './components/PrivateRoute';
@@ -23,16 +24,18 @@ const PhonebookPage = lazy(() =>
 import('./pages/PhonebookPage'),
 );
 const NotFoundPage  = lazy(() =>
-  import('./pages/NotFoundPage'),
+import('./pages/NotFoundPage'),
 );
 
-class App extends Component {
+const App = () => {
 
-   componentDidMount() {
-    this.props.onGetCurrentUser();
-  }
+  const dispatch = useDispatch();
 
-render() {
+  useEffect(() => {
+    dispatch(getCurrentUser())
+  }, [dispatch])
+
+
   return (
     <>
       <Navbar />
@@ -53,10 +56,7 @@ render() {
     </>
   );
 }
-}
 
-const mapDispatchToProps = {
-  onGetCurrentUser: getCurrentUser,
-}
 
-export default connect(null, mapDispatchToProps) (App);
+
+export default App;

@@ -11,12 +11,12 @@ const ContactList = () => {
     const dispatch = useDispatch();
     const onRemove = (id) => dispatch(deleteContact(id));
 
-    const result = filteredContacts.map(({ id, name, number }) => (
-        <ContactListItem key={id} name={name} number={number} onClickRemove={() => onRemove(id)} />
+    const result = filteredContacts.map(({ id, ...restProps }) => (
+        <ContactListItem key={id} {...restProps} onClickRemove={() => onRemove(id)} />
     ))
     
     return (
-        filteredContacts.length > 0 && (
+        filteredContacts.length && (
             <ul className={styles.contactsList}>
                 {result}
             </ul>
@@ -32,8 +32,7 @@ ContactList.propTypes = {
             name: PropTypes.string.isRequired,
             number: PropTypes.string.isRequired,
         })
-    ),
-    onRemove: PropTypes.func.isRequired,
+    )
 }
 
 export default ContactList;

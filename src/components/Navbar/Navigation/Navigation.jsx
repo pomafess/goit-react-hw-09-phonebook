@@ -2,9 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { shallowEqual, useSelector} from 'react-redux';
 
-
 import s from './Navigation.module.css';
-
 
 const Navigation = () => {
 const isAuthenticated = useSelector(state => state.auth.token, shallowEqual)
