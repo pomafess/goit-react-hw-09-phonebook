@@ -5,6 +5,7 @@ import {register} from '../../redux/auth/auth-operations'
 import useForm from '../../shared/hooks/useForm';
 import {fields} from './fields';
 import FormField from '../../shared/components/FormField';
+import Button from '../../shared/components/Button'
 
 import s from '../LoginPage/LoginPage.module.css'
 
@@ -45,7 +46,7 @@ const RegisterPage = () => {
              <FormField {...fields.password} value={data.password} onChange={handleChange} className={s.input} />
           </label>
 
-          <button type="submit"  className={s.buttonForm}>Зарегистрироваться</button>
+          <Button type="submit">Зарегистрироваться</Button>
         </form>
       </div>
     );

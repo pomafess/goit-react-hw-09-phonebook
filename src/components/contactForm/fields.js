@@ -2,7 +2,7 @@ export const fields = {
   name: {
       type:"text",
       name:"name",
-      placeholder: "Enter you Name",
+      placeholder: "Enter your Name",
       required: true,
   },
   number: {

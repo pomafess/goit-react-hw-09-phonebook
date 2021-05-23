@@ -6,6 +6,7 @@ import { logIn } from '../../redux/auth/auth-operations';
 import useForm from '../../shared/hooks/useForm';
 import FormField from '../../shared/components/FormField';
 import {fields} from './fields';
+import Button from '../../shared/components/Button'
 
 import s from './LoginPage.module.css';
 
@@ -40,7 +41,7 @@ const LoginPage = () => {
         
           </label>
 
-          <button type="submit" className={s.buttonForm}>Войти</button>
+          <Button type="submit">Войти</Button>
         </form>
       </div>
     );

@@ -5,6 +5,7 @@ import { addContact } from '../../redux/phonebook/phonebook-operations';
 import useForm from '../../shared/hooks/useForm';
 import {fields} from './fields';
 import FormField from '../../shared/components/FormField'
+import Button from '../../shared/components/Button'
 
 import s from './ContactForm.module.css';
 
@@ -26,7 +27,7 @@ const ContactForm = () => {
                  <FormField {...fields.name} value={data.name} onChange={handleChange} className={s.input} /><br />
                 <h3>Number</h3>
                  <FormField {...fields.number} value={data.number} onChange={handleChange} className={s.input} /><br/>
-                <button type="submit" className={s.buttonForm}>Add contact</button>
+                <Button type="submit">Add contact</Button>
             </form>
         )
     }
@@ -43,28 +44,3 @@ ContactForm.propTypes = {
 
 
 export default ContactForm;
-
-// handleChange = (type, e) => {
-    //     const {contacts} = this.props;
-    //     if (type==='name') {
-    //       const contactInState = contacts.find(contact => contact.name.toLowerCase() === e.target.value.toLowerCase());
-    //       if (contactInState) {
-    //         alert(`${contactInState.name} is already in contacts!`);
-    //       }
-    //     }
-    //     this.setState({[type]: e.target.value})
-    // }
-
-    // handleSubmit = e => {
-    //     e.preventDefault();
-    //     const {name, number} = this.state;
-    //     const {contacts, onAddContact} = this.props;
-    //     const contactInState = contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase());
-    //     contactInState && alert(`${contactInState.name} is already in contacts!`);
-    //     if (!contactInState && name && number) {
-    //         onAddContact(name, number);
-    //         this.setState(contacts);
-    //         this.setState({ name: '', number: '' })
-    //         return
-    //     }
-    // }
